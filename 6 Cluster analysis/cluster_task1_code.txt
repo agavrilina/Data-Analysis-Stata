@@ -1,0 +1,27 @@
+// стандартизация всех переменных
+egen zinternet = std( internet )
+egen zsecure = std( secure )
+egen zexport = std( export )
+egen zimport = std( import )
+egen ztelephone = std( telephone )
+egen zhightech = std( hightech )
+egen zmobile = std( mobile )
+
+// проведение анализа методом Варда
+cluster wardslinkage zinternet zsecure zexport zimport ztelephone zhightech zmobile , measure(L2) name(myclust)
+
+// дендрограмма
+cluster dendrogram myclust, horizontal
+
+// посмотрим, на какое кол-во кластеров оптимально разбить
+cluster stop myclust,  rule(calinski)
+
+// сохранение кластерного решения
+cluster generate clustdes = groups (2), name (myclust)
+
+// смотрим среднее и дисперсию по двум кластерам
+tabstat zinternet zsecure zexport zimport ztelephone zhightech zmobile, statistics( mean sd ) by(clustdes)
+
+
+
+

@@ -1,0 +1,24 @@
+// стандартизация всех переменных
+egen zna_sales = std(NA_Sales)
+egen zeu_sales = std(EU_Sales)
+egen zjp_sales = std(JP_Sales)
+egen zother_sales = std(Other_Sales)
+egen zglobal_sales = std(Global_Sales)
+egen zcritic_score = std(Critic_Score)
+egen zcritic_count = std(Critic_Count)
+egen zuser_score = std(User_Score)
+egen zuser_count = std(User_Count)
+
+// проведение анализа методом k-средних
+cluster kmeans zna_sales zeu_sales zjp_sales zother_sales zglobal_sales zcritic_score zcritic_count zuser_score zuser_count , k(3) measure(L2) start(krandom)
+
+// кол-во кластеров
+cluster stop,  rule(calinski)
+
+// смотрим среднее и дисперсию по двум кластерам
+tabstat  zna_sales zeu_sales zjp_sales zother_sales zglobal_sales zcritic_score zcritic_count zuser_score zuser_count  , statistics( mean sd ) by(_clus_1)
+
+
+
+
+
