@@ -1,0 +1,26 @@
+// регрессия, расчет со стандартизированными коэффициентами
+reg salary salbegin jobtime prevexp, beta
+
+// сохранение стандартизированных остатков 
+predict r, rstandard
+
+// проверка остатков на нормальность с помощью теста Шапиро-Уилка
+swilk r
+
+// график плоткости остатков + плотность нормального
+kdensity r, normal
+
+// расчет статистик влияния
+dfbeta
+
+// VIF (variance inflation factor)
+estat vif
+
+// корр. матрица
+pwcorr prevexp jobtime salbegin salary, sig
+
+// проверка на гетероскедастичность
+estat hettest
+
+// residual-versus-fitted plot
+rvfplot
