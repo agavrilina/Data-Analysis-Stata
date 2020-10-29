@@ -1,0 +1,41 @@
+//открыли файл-образец 
+sysuse nlsw88.dta
+//описали файл с данными
+describe
+desc
+//открыть данные в режиме правки
+edit
+//очистить окно Stata
+clear
+//создание новой "пустой" переменной 
+//float по умолчанию
+generate newvar = .
+//создание новой переменной типа int
+generate int gender = .
+//создание метки значений "gender" с метками 1 и 2
+label define gender_label 1 "male" 2 "female"
+// присвоение метки значений "gender" переменной gender
+label values gender gender_label
+//из numeric в string c заменой существующей переменной
+tostring var2, replace
+//из numeric в string c созданием новой переменной на основе существующей 
+tostring var4, gen(var5)
+//из string в numeric c заменой существующей переменной
+destring var2, replace
+//порядок следования переменных 
+ order var6 var5 var2
+//частотная таблица без учёта пропущенных значений
+tab gender
+//частотная таблица c учётом пропущенных значений
+tab gender, missing
+//частотные таблицы для нескольких переменных
+tab1 married race
+//таблица сапряжённости
+tab married race
+//описательная статистика
+sum age // короткий вариант
+sum age, detail //развёрнутый вариант
+tabstat age if grade > 14, statistics( max mean iqr ) by(married)
+mean age
+
+
